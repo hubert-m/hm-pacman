@@ -1,31 +1,11 @@
+@import "assets/css/Board.css";
+@import "assets/css/Score.css";
 @import "assets/css/Pacman.css";
+@import "assets/css/Ghost.css";
+@import "assets/css/Food.css";
 
 .app {
     display: flex;
     flex-direction: column;
     height:100%;
-}
-
-.score {
-    flex: 0 1 auto;
-    height: 50px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    padding-top: 20px;
-}
-
-.result {
-    color: #FFF;
-    display: inline;
-    text-transform: uppercase;
-    margin: 0;
-    padding: 0;
-}
-
-.board {
-    height: 100%;
-    background-color: #003366;
-    border: 20px solid black;
 }

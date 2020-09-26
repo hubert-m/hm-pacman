@@ -1,0 +1,17 @@
+.score {
+    flex: 0 1 auto;
+    height: 50px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    padding-top: 20px;
+}
+
+.result {
+    color: #FFF;
+    display: inline;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+}
