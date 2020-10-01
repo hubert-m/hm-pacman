@@ -1,32 +1,46 @@
-import React, { Component } from 'react';
-import '../assets/css/Food.css';
+import React, { Component } from "react";
+import "../assets/css/Food.css";
+import Settings from "../constants/Settings";
 
 class Food extends Component {
-    state = {
-        position: {
-            top: this.props.position.top,
-            left: this.props.position.left
-        },
-        hidden: false
-    }
+  state = {
+    position: {
+      top: this.props.position.top,
+      left: this.props.position.left,
+    },
+    hidden: false,
+  };
 
-    ate() {
-        this.setState({ hidden: !this.hidden });
-    }
+  ate() {
+    this.setState({ hidden: !this.hidden });
+  }
 
-    render() {
-        const { position, hidden } = this.state;
-        return (
-            <div style={position} className={hidden ? 'food hidden' : 'food'}>
-                <div className="food-dot"></div>
-            </div>
-        );
-    }
+  render() {
+    const { position, hidden } = this.state;
+    return (
+      <div
+        style={{
+          top: position.top,
+          left: position.left,
+          width: Settings.STEP,
+          height: Settings.STEP,
+        }}
+        className={hidden ? "food hidden" : "food"}
+      >
+        <div
+          className="food-dot"
+          style={{
+            width: `${Settings.COIN_SIZE}px`,
+            height: `${Settings.COIN_SIZE}px`,
+          }}
+        />
+      </div>
+    );
+  }
 }
 
 Food.defaultProps = {
-    foodSize: 50,
-    position: { top: 0, left: 0 }
-}
+  position: { top: 0, left: 0 },
+};
 
 export default Food;

@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import { ReactComponent as GhostSvg } from "../assets/images/ghost.svg";
 import "../assets/css/Ghost.css";
+import Settings from "../constants/Settings";
+import GhostColors from "../constants/GhostColors";
+import Directions from "../constants/Directions";
 
 class Ghost extends Component {
   state = {
-    direction: "left",
+    direction: Directions.LEFT,
     position: {
-      top: this.props.position.top,
-      left: this.props.position.left,
+      top:
+        Settings.TOP_SCORE_BOARD_HEIGHT +
+        Settings.BORDER +
+        this.props.position.top,
+      left: Settings.BORDER + this.props.position.left,
     },
   };
 
@@ -22,9 +28,8 @@ class Ghost extends Component {
   }
 
   changeDirection = () => {
-    const arrayOfMovement = ["left", "up", "down", "right"];
-    const movement = Math.floor(Math.random() * 4);
-
+    const arrayOfMovement = Object.values(Directions);
+    const movement = Math.floor(Math.random() * arrayOfMovement.length);
     this.setState({ direction: arrayOfMovement[movement] });
   };
 
@@ -34,36 +39,45 @@ class Ghost extends Component {
     const currentTop = this.state.position.top;
     const currentLeft = this.state.position.left;
     const { direction } = this.state;
-    const { step, border, size, topScoreBoardHeight } = this.props;
 
     if (direction === "right") {
-      this.setState({
-        position: {
-          top: currentTop,
-          left: Math.min(currentLeft + step, window.innerWidth - border - size),
-        },
-      });
+      if (
+        currentLeft + Settings.STEP <=
+        window.innerWidth - Settings.BORDER - Settings.SIZE
+      ) {
+        this.setState({
+          position: {
+            top: currentTop,
+            left: currentLeft + Settings.STEP,
+          },
+        });
+      }
     } else if (direction === "down") {
-      this.setState({
-        position: {
-          top: Math.min(
-            currentTop + step,
-            window.innerHeight - border - size - topScoreBoardHeight
-          ),
-          left: currentLeft,
-        },
-      });
+      if (
+        currentTop + Settings.STEP <=
+        window.innerHeight - Settings.BORDER - Settings.SIZE
+      ) {
+        this.setState({
+          position: {
+            top: currentTop + Settings.STEP,
+            left: currentLeft,
+          },
+        });
+      }
     } else if (direction === "left") {
       this.setState({
         position: {
           top: currentTop,
-          left: Math.max(currentLeft - step, border),
+          left: Math.max(currentLeft - Settings.STEP, Settings.BORDER),
         },
       });
     } else if (direction === "up") {
       this.setState({
         position: {
-          top: Math.max(currentTop - step, border + topScoreBoardHeight),
+          top: Math.max(
+            currentTop - Settings.STEP,
+            Settings.BORDER + Settings.TOP_SCORE_BOARD_HEIGHT
+          ),
           left: currentLeft,
         },
       });
@@ -73,7 +87,15 @@ class Ghost extends Component {
   render() {
     const { color } = this.props;
     return (
-      <div style={this.state.position} className="ghost">
+      <div
+        className="ghost"
+        style={{
+          top: this.state.position.top,
+          left: this.state.position.left,
+          width: Settings.SIZE,
+          height: Settings.SIZE,
+        }}
+      >
         <GhostSvg className={`ghost-${color}`} />
       </div>
     );
@@ -81,15 +103,11 @@ class Ghost extends Component {
 }
 
 Ghost.defaultProps = {
-  color: "pink",
-  step: 50,
-  size: 50,
+  color: GhostColors.PINK,
   position: {
     top: 50 * 3,
     left: 50 * 3,
   },
-  border: 10 * 2,
-  topScoreBoardHeight: 50,
 };
 
 export default Ghost;

@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import propTypes from "prop-types";
 import { ReactComponent as PacmanSvg } from "../assets/images/pacman.svg";
+import Settings from "../constants/Settings";
+import Directions from "../constants/Directions";
 
 class Pacman extends Component {
   state = {
-    direction: "right",
+    direction: Directions.RIGHT,
     position: {
-      top: this.props.border + this.props.topScoreBoardHeight,
-      left: this.props.border,
+      top: Settings.BORDER + Settings.TOP_SCORE_BOARD_HEIGHT,
+      left: Settings.BORDER,
     },
   };
 
@@ -21,43 +22,50 @@ class Pacman extends Component {
   }
 
   handleKeyDown = ({ keyCode, key }) => {
-    console.log(keyCode, key);
-
     const currentTop = this.state.position.top;
     const currentLeft = this.state.position.left;
-    const { step, size, border, topScoreBoardHeight } = this.props;
 
     if (
       (keyCode === 39 && key === "ArrowRight") ||
       (keyCode === 68 && key === "d")
     ) {
-      this.setState({
-        direction: "right",
-        position: {
-          top: currentTop,
-          left: Math.min(currentLeft + step, window.innerWidth - border - size),
-        },
-      });
+      if (
+        currentLeft + Settings.STEP <=
+        window.innerWidth - Settings.BORDER - Settings.SIZE
+      ) {
+        this.setState({
+          direction: Directions.RIGHT,
+          position: {
+            top: currentTop,
+            left: currentLeft + Settings.STEP,
+          },
+        });
+      }
     } else if (
       (keyCode === 40 && key === "ArrowDown") ||
       (keyCode === 83 && key === "s")
     ) {
-      this.setState({
-        direction: "down",
-        position: {
-          top: Math.min(currentTop + step, window.innerHeight - border - size),
-          left: currentLeft,
-        },
-      });
+      if (
+        currentTop + Settings.STEP <=
+        window.innerHeight - Settings.BORDER - Settings.SIZE
+      ) {
+        this.setState({
+          direction: Directions.DOWN,
+          position: {
+            top: currentTop + Settings.STEP,
+            left: currentLeft,
+          },
+        });
+      }
     } else if (
       (keyCode === 37 && key === "ArrowLeft") ||
       (keyCode === 65 && key === "a")
     ) {
       this.setState({
-        direction: "left",
+        direction: Directions.LEFT,
         position: {
           top: currentTop,
-          left: Math.max(currentLeft - step, border),
+          left: Math.max(currentLeft - Settings.STEP, Settings.BORDER),
         },
       });
     } else if (
@@ -65,9 +73,12 @@ class Pacman extends Component {
       (keyCode === 87 && key === "w")
     ) {
       this.setState({
-        direction: "up",
+        direction: Directions.UP,
         position: {
-          top: Math.max(currentTop - step, border + topScoreBoardHeight),
+          top: Math.max(
+            currentTop - Settings.STEP,
+            Settings.BORDER + Settings.TOP_SCORE_BOARD_HEIGHT
+          ),
           left: currentLeft,
         },
       });
@@ -81,7 +92,12 @@ class Pacman extends Component {
         ref={this.pacmanRef}
         className={`pacman pacman-${direction}`}
         tabIndex="0"
-        style={position}
+        style={{
+          top: position.top,
+          left: position.left,
+          width: Settings.SIZE,
+          height: Settings.SIZE,
+        }}
         onKeyDown={this.handleKeyDown}
       >
         <PacmanSvg />
@@ -89,19 +105,5 @@ class Pacman extends Component {
     );
   }
 }
-
-Pacman.defaultProps = {
-  step: 50,
-  size: 50,
-  border: 10 * 2,
-  topScoreBoardHeight: 50,
-};
-
-Pacman.propTypes = {
-  step: propTypes.number,
-  size: propTypes.number,
-  border: propTypes.number,
-  topScoreBoardHeight: propTypes.number,
-};
 
 export default Pacman;
