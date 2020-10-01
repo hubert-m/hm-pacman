@@ -1,8 +1,8 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { ReactComponent as GhostSvg } from "../assets/images/ghost.svg";
 import "../assets/css/Ghost.css";
 import Settings from "../constants/Settings";
-import GhostColors from "../constants/GhostColors";
 import Directions from "../constants/Directions";
 
 class Ghost extends Component {
@@ -105,12 +105,9 @@ class Ghost extends Component {
   }
 }
 
-Ghost.defaultProps = {
-  color: GhostColors.PINK,
-  position: {
-    top: Settings.STEP * 3,
-    left: Settings.STEP * 3,
-  },
-};
+Ghost.propTypes = {
+  color: PropTypes.string.isRequired,
+  position: PropTypes.object.isRequired,
+}
 
 export default Ghost;

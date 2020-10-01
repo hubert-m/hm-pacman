@@ -4,6 +4,7 @@ import { ReactComponent as PacmanSvg } from "../assets/images/pacman.svg";
 import Settings from "../constants/Settings";
 import Directions from "../constants/Directions";
 
+// TODO: rebuild to functional component
 class Pacman extends Component {
   state = {
     direction: Directions.RIGHT,
