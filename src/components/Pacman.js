@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { ReactComponent as PacmanSvg } from "../assets/images/pacman.svg";
 import Settings from "../constants/Settings";
 import Directions from "../constants/Directions";
+import Control from "./Control";
 
 // TODO: rebuild to functional component
 class Pacman extends Component {
@@ -16,11 +17,11 @@ class Pacman extends Component {
 
   constructor(props) {
     super(props);
-    this.pacmanRef = React.createRef();
+    this.pacmanRefDiv = React.createRef();
   }
 
   componentDidMount() {
-    if (this.props.isFocusOn) this.pacmanRef.current.focus();
+    if (this.props.isFocusOn) this.pacmanRefDiv.current.focus();
   }
 
   handleKeyDown = ({ keyCode, key }) => {
@@ -90,20 +91,23 @@ class Pacman extends Component {
   render() {
     const { direction, position } = this.state;
     return (
-      <div
-        ref={this.pacmanRef}
-        className={`pacman pacman-${direction}`}
-        tabIndex="0"
-        style={{
-          top: position.top,
-          left: position.left,
-          width: Settings.STEP,
-          height: Settings.STEP,
-        }}
-        onKeyDown={this.handleKeyDown}
-      >
-        <PacmanSvg style={{ width: Settings.SIZE, height: Settings.SIZE }} />
-      </div>
+      <>
+        <div
+          ref={this.pacmanRefDiv}
+          className={`pacman pacman-${direction}`}
+          tabIndex="0"
+          style={{
+            top: position.top,
+            left: position.left,
+            width: Settings.STEP,
+            height: Settings.STEP,
+          }}
+          onKeyDown={this.handleKeyDown}
+        >
+          <PacmanSvg style={{ width: Settings.SIZE, height: Settings.SIZE }} />
+        </div>
+        <Control state={this.state} pacmanRef={this.props.pacmanRef} />
+      </>
     );
   }
 }

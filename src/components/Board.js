@@ -12,8 +12,6 @@ class Board extends Component {
   constructor(props) {
     super(props);
 
-    this.pacmanRef = React.createRef();
-
     this.foods = [];
     this.amountOfFood =
       ((window.innerWidth - Settings.STEP) *
@@ -35,9 +33,9 @@ class Board extends Component {
   }
 
   lookForEat = () => {
-    const pacmanX = this.pacmanRef.current.state.position.left;
-    const pacmanY = this.pacmanRef.current.state.position.top;
-    const pacmanSize = this.pacmanRef.current.props.size;
+    const pacmanX = this.props.pacmanRef.current.state.position.left;
+    const pacmanY = this.props.pacmanRef.current.state.position.top;
+    const pacmanSize = this.props.pacmanRef.current.props.size;
 
     const pacmanLastX = pacmanX + pacmanSize / 2;
     const pacmanLastY = pacmanY + pacmanSize / 2;
@@ -94,7 +92,8 @@ class Board extends Component {
     }
 
     let ghosts = [];
-    for (let i = 0; i < Settings.NUMBER_OF_GHOSTS; i++) {
+    const numberOfGhosts = Math.ceil(foods.length / Settings.GHOST_PER_X_POINTS);
+    for (let i = 0; i < numberOfGhosts; i++) {
       const randomHeight = Math.floor(
         Math.random() * maxStepsHeight(window.innerHeight)
       );
@@ -119,7 +118,7 @@ class Board extends Component {
     return (
       <div className="board">
         {foods}
-        <Pacman ref={this.pacmanRef} isFocusOn={!this.props.isWindowResized} />
+        <Pacman ref={this.props.pacmanRef} isFocusOn={!this.props.isWindowResized} pacmanRef={this.props.pacmanRef} />
         {ghosts}
       </div>
     );
@@ -129,10 +128,12 @@ class Board extends Component {
 Board.defaultProps = {
   setScore: () => {},
   isWindowResized: false,
+  pacmanRef: {},
 };
 Board.propTypes = {
   setScore: PropTypes.func,
   isWindowResized: PropTypes.bool,
+  pacmanRef: PropTypes.object,
 };
 
 export default Board;

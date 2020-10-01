@@ -13,6 +13,5 @@
 .resized-page__text {
     color: var(--white-color);
     font-size: 31px;
-    padding-bottom: 5px;
-    line-height: 0;
+    margin: 0;
 }

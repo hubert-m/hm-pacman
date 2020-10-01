@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useWindowSize from "./helpers/useWindowSize";
 import "./App.css";
 import Score from "./components/Score";
@@ -9,6 +9,7 @@ import ResizedPage from "./components/ResizedPage";
 let resizePrevent = false;
 function App() {
   const size = useWindowSize();
+  const pacmanRef = useRef(null);
   const [score, setScore] = useState(0);
   const [isWindowResized, setWindowResized] = useState(false);
 
@@ -24,7 +25,7 @@ function App() {
       {isWindowResized && <ResizedPage />}
       <RefreshButton />
       <Score score={score} />
-      <Board setScore={setScore} isWindowResized={isWindowResized} />
+      <Board setScore={setScore} isWindowResized={isWindowResized} pacmanRef={pacmanRef} />
     </div>
   );
 }
