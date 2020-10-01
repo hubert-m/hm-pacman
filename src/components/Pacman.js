@@ -33,7 +33,7 @@ class Pacman extends Component {
     ) {
       if (
         currentLeft + Settings.STEP <=
-        window.innerWidth - Settings.BORDER - Settings.SIZE
+        window.innerWidth - Settings.BORDER - Settings.STEP
       ) {
         this.setState({
           direction: Directions.RIGHT,
@@ -49,7 +49,7 @@ class Pacman extends Component {
     ) {
       if (
         currentTop + Settings.STEP <=
-        window.innerHeight - Settings.BORDER - Settings.SIZE
+        window.innerHeight - Settings.BORDER - Settings.STEP
       ) {
         this.setState({
           direction: Directions.DOWN,

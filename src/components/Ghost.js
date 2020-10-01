@@ -43,7 +43,7 @@ class Ghost extends Component {
     if (direction === "right") {
       if (
         currentLeft + Settings.STEP <=
-        window.innerWidth - Settings.BORDER - Settings.SIZE
+        window.innerWidth - Settings.BORDER - Settings.STEP
       ) {
         this.setState({
           position: {
@@ -55,7 +55,7 @@ class Ghost extends Component {
     } else if (direction === "down") {
       if (
         currentTop + Settings.STEP <=
-        window.innerHeight - Settings.BORDER - Settings.SIZE
+        window.innerHeight - Settings.BORDER - Settings.STEP
       ) {
         this.setState({
           position: {
