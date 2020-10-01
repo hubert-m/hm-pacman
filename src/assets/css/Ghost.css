@@ -1,6 +1,9 @@
 .ghost {
     position: absolute;
     transition: all 2s linear;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .ghost-red {

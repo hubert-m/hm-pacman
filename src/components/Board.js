@@ -4,6 +4,8 @@ import Pacman from "./Pacman";
 import Ghost from "./Ghost";
 import Food from "./Food";
 import Settings from "../constants/Settings";
+import maxStepsWidth from "../helpers/maxStepsWidth";
+import maxStepsHeight from "../helpers/maxStepsHeight";
 
 class Board extends Component {
   constructor(props) {
@@ -67,42 +69,46 @@ class Board extends Component {
   };
   render() {
     let foods = [];
-    let currentTop = 0;
-    let currentLeft = Settings.STEP;
-    for (let i = 0; i < this.amountOfFood; i++) {
-      if (currentLeft + Settings.STEP >= window.innerWidth - Settings.BORDER) {
-        currentTop += Settings.STEP;
-        currentLeft = 0;
-      }
+    let countOfCoins = 0;
+    for (let i = 0; i < maxStepsHeight(window.innerHeight); i++) {
+      for (let j = 0; j < maxStepsWidth(window.innerWidth); j++) {
 
-      if (
-        currentTop + Settings.STEP >=
-        window.innerHeight - Settings.BORDER - Settings.TOP_SCORE_BOARD_HEIGHT
-      ) {
-        break;
-      }
+        const position = {
+          left: Settings.BORDER + (j * Settings.STEP),
+          top: Settings.TOP_SCORE_BOARD_HEIGHT + Settings.BORDER + (i * Settings.STEP),
+        }
 
-      const position = {
-        left: currentLeft + Settings.BORDER,
-        top: currentTop + Settings.BORDER + Settings.TOP_SCORE_BOARD_HEIGHT,
-      };
-      currentLeft += Settings.STEP;
-      foods.push(
-        <Food
-          key={`food-elem-${i}`}
-          position={position}
-          ref={this["food" + i]}
-        />
-      );
+        countOfCoins++;
+        foods.push(
+            <Food
+                key={`food-elem-${countOfCoins}`}
+                position={position}
+                ref={this["food" + countOfCoins]}
+            />
+        );
+      }
     }
+
     return (
       <div className="board">
         {foods}
-        <Pacman ref={this.pacmanRef} />
-        <Ghost color="pink" position={{ top: 50 * 2, left: 50 * 6 }} />
-        <Ghost color="red" position={{ top: 50 * 7, left: 50 * 2 }} />
-        <Ghost color="blue" position={{ top: 50 * 4, left: 50 * 11 }} />
-        <Ghost color="yellow" position={{ top: 50 * 7, left: 50 * 10 }} />
+        <Pacman ref={this.pacmanRef} isFocusOn={!this.props.isWindowResized} />
+        <Ghost
+          color="pink"
+          position={{ top: Settings.STEP * 2, left: Settings.STEP * 2 }}
+        />
+        <Ghost
+          color="red"
+          position={{ top: Settings.STEP * 7, left: Settings.STEP * 2 }}
+        />
+        <Ghost
+          color="blue"
+          position={{ top: Settings.STEP * 4, left: Settings.STEP * 11 }}
+        />
+        <Ghost
+          color="yellow"
+          position={{ top: Settings.STEP * 7, left: Settings.STEP * 10 }}
+        />
       </div>
     );
   }
@@ -110,9 +116,11 @@ class Board extends Component {
 
 Board.defaultProps = {
   setScore: () => {},
+  isWindowResized: false,
 };
 Board.propTypes = {
   setScore: PropTypes.func,
+  isWindowResized: PropTypes.bool,
 };
 
 export default Board;

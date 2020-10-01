@@ -1,0 +1,18 @@
+.resized-page {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,.80);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 999;
+}
+
+.resized-page__text {
+    color: var(--white-color);
+    font-size: 31px;
+    padding-bottom: 5px;
+    line-height: 0;
+}

@@ -92,11 +92,14 @@ class Ghost extends Component {
         style={{
           top: this.state.position.top,
           left: this.state.position.left,
-          width: Settings.SIZE,
-          height: Settings.SIZE,
+          width: Settings.STEP,
+          height: Settings.STEP,
         }}
       >
-        <GhostSvg className={`ghost-${color}`} />
+        <GhostSvg
+          className={`ghost-${color}`}
+          style={{ width: Settings.SIZE, height: Settings.SIZE }}
+        />
       </div>
     );
   }
@@ -105,8 +108,8 @@ class Ghost extends Component {
 Ghost.defaultProps = {
   color: GhostColors.PINK,
   position: {
-    top: 50 * 3,
-    left: 50 * 3,
+    top: Settings.STEP * 3,
+    left: Settings.STEP * 3,
   },
 };
 

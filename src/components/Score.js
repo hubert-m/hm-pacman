@@ -4,7 +4,7 @@ import Settings from "../constants/Settings";
 
 const Score = ({ score }) => {
     return (
-        <div className="score" style={{ height: `${Settings.TOP_SCORE_BOARD_HEIGHT}px` }}>
+        <div className="score" style={{ height: Settings.TOP_SCORE_BOARD_HEIGHT }}>
             <p className="result">Score: {score}</p>
         </div>
     )

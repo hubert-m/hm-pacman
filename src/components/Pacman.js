@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { ReactComponent as PacmanSvg } from "../assets/images/pacman.svg";
 import Settings from "../constants/Settings";
 import Directions from "../constants/Directions";
@@ -18,7 +19,7 @@ class Pacman extends Component {
   }
 
   componentDidMount() {
-    this.pacmanRef.current.focus();
+    if (this.props.isFocusOn) this.pacmanRef.current.focus();
   }
 
   handleKeyDown = ({ keyCode, key }) => {
@@ -95,15 +96,23 @@ class Pacman extends Component {
         style={{
           top: position.top,
           left: position.left,
-          width: Settings.SIZE,
-          height: Settings.SIZE,
+          width: Settings.STEP,
+          height: Settings.STEP,
         }}
         onKeyDown={this.handleKeyDown}
       >
-        <PacmanSvg />
+        <PacmanSvg style={{ width: Settings.SIZE, height: Settings.SIZE }} />
       </div>
     );
   }
 }
+
+Pacman.defaultProps = {
+  isFocusOn: true,
+};
+
+Pacman.propTypes = {
+  isFocusOn: PropTypes.bool,
+};
 
 export default Pacman;

@@ -30,8 +30,8 @@ class Food extends Component {
         <div
           className="food-dot"
           style={{
-            width: `${Settings.COIN_SIZE}px`,
-            height: `${Settings.COIN_SIZE}px`,
+            width: Settings.COIN_SIZE,
+            height: Settings.COIN_SIZE,
           }}
         />
       </div>
