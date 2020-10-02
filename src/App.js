@@ -8,8 +8,9 @@ import ResizedPage from "./components/ResizedPage";
 
 let resizePrevent = false;
 function App() {
+  // TODO: use params of window size in other components by props
   const size = useWindowSize();
-  const pacmanRef = useRef(null);
+    const pacmanRef = useRef(null);
   const [score, setScore] = useState(0);
   const [isWindowResized, setWindowResized] = useState(false);
 
