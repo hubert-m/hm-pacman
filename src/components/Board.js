@@ -6,36 +6,14 @@ import Food from "./Food";
 import Settings from "../constants/Settings";
 import maxStepsWidth from "../helpers/maxStepsWidth";
 import maxStepsHeight from "../helpers/maxStepsHeight";
-import GhostColors from "../constants/GhostColors";
 import Directions from "../constants/Directions";
 import Control from "./Control";
+import useWindowSize from "../helpers/useWindowSize";
+import StateBoard from "../constants/StateBoard";
+import setGhostsLoop from "../helpers/setGhostsLoop";
 
-const setGhostsLoop = (numberOfGhosts) => {
-  const result = [];
-  for (let i = 0; i < numberOfGhosts; i++) {
-    const randomHeight = Math.floor(
-        Math.random() * maxStepsHeight(window.innerHeight)
-    );
-    const randomWidth = Math.floor(
-        Math.random() * maxStepsWidth(window.innerWidth)
-    );
-    const position = {
-      top: Settings.STEP * randomHeight,
-      left: Settings.STEP * randomWidth,
-    };
-    const randomColorIndex = Math.floor(
-        Math.random() * Object.values(GhostColors).length
-    );
-
-    result.push({
-      color: Object.values(GhostColors)[randomColorIndex],
-      startPosition: position,
-    })
-  }
-  return result;
-}
-
-const Board = ({ setScore, isWindowResized, pacmanRef }) => {
+const Board = ({ setScore, pacmanRef, stateBoard, setStateBoard }) => {
+  const windowSize = useWindowSize();
   const [pacmanDirection, pacmanSetDirection] = useState(Directions.RIGHT);
   const [pacmanPosition, pacmanSetPosition] = useState({
     top: Settings.BORDER + Settings.TOP_SCORE_BOARD_HEIGHT,
@@ -46,37 +24,38 @@ const Board = ({ setScore, isWindowResized, pacmanRef }) => {
 
   const foodsRef = [];
   const amountOfFood =
-    ((window.innerWidth - Settings.STEP) *
-      (window.innerHeight - Settings.TOP_SCORE_BOARD_HEIGHT)) /
+    ((windowSize.width - Settings.STEP) *
+      (windowSize.height - Settings.TOP_SCORE_BOARD_HEIGHT)) /
       (Settings.STEP * Settings.STEP) -
     1;
 
   for (let i = 0; i < amountOfFood; i++) {
-    foodsRef["food" + i] = React.createRef();
+    foodsRef[i] = React.createRef();
   }
 
   useEffect(() => {
-    if (!isWindowResized && pacmanRef) pacmanRef.current.focus();
-    if (isWindowResized && pacmanRef) pacmanRef.current.blur();
-  }, [pacmanRef, isWindowResized]);
-
-  useEffect(() => {
-    const intervalFood = setInterval(lookForEat, 100);
-    return () => {
-      clearInterval(intervalFood);
-    };
+    if (stateBoard === StateBoard.PLAY) {
+      if (pacmanRef) pacmanRef.current.focus();
+      const intervalFood = setInterval(lookForEat, 100);
+      const intervalGhost = setInterval(ghostCollision, 100);
+      return () => {
+        clearInterval(intervalFood);
+        clearInterval(intervalGhost);
+      };
+    } else {
+      if (pacmanRef) pacmanRef.current.blur();
+    }
   });
 
   const lookForEat = () => {
     const pacmanX = pacmanPosition.left;
     const pacmanY = pacmanPosition.top;
-    const pacmanSize = Settings.SIZE;
 
-    const pacmanLastX = pacmanX + pacmanSize / 2;
-    const pacmanLastY = pacmanY + pacmanSize / 2;
+    const pacmanLastX = pacmanX + Settings.SIZE / 2;
+    const pacmanLastY = pacmanY + Settings.SIZE / 2;
 
     for (let i = 0; i <= amountOfFood; i++) {
-      const currentFood = foodsRef["food" + i].current;
+      const currentFood = foodsRef[i].current;
       if (currentFood) {
         const currentFoodX = currentFood.state.position.left;
         const currentFoodY = currentFood.state.position.top;
@@ -118,21 +97,43 @@ const Board = ({ setScore, isWindowResized, pacmanRef }) => {
         <Food
           key={`food-elem-${countOfCoins}`}
           position={position}
-          ref={foodsRef["food" + countOfCoins]}
+          ref={foodsRef[countOfCoins]}
         />
       );
     }
   }
 
   const numberOfGhosts = Math.ceil(foods.length / Settings.GHOST_PER_X_POINTS);
+  const ghostsRef = [];
+
+  for (let i = 0; i < numberOfGhosts; i++) {
+    ghostsRef[i] = React.createRef();
+  }
+
+  const ghostCollision = () => {
+    const pacmanX = pacmanPosition?.left;
+    const pacmanY = pacmanPosition?.top;
+    for (let i = 0; i < numberOfGhosts; i++) {
+      const currentGhost = ghostsRef[i]?.current;
+      const currentGhostX = currentGhost?.state?.position?.left;
+      const currentGhostY = currentGhost?.state?.position?.top;
+      if (
+        pacmanX === currentGhostX &&
+        pacmanY === currentGhostY &&
+        pacmanX &&
+        pacmanY &&
+        currentGhostX &&
+        currentGhostY
+      ) {
+        setStateBoard(StateBoard.LOSE);
+      }
+    }
+  };
 
   useEffect(() => {
-    if(generateGhosts) {
-      const tmp = setGhostsLoop(numberOfGhosts);
-      setGhosts([...tmp]);
-    }
+    if (generateGhosts) setGhosts([...setGhostsLoop(numberOfGhosts, windowSize)]);
     setGenerateGhosts(false);
-  }, [generateGhosts, numberOfGhosts])
+  }, [generateGhosts, numberOfGhosts, windowSize]);
 
   return (
     <div className="board">
@@ -144,19 +145,23 @@ const Board = ({ setScore, isWindowResized, pacmanRef }) => {
         setDirection={pacmanSetDirection}
         pacmanRef={pacmanRef}
       />
-      <Control
-        position={pacmanPosition}
-        setPosition={pacmanSetPosition}
-        setDirection={pacmanSetDirection}
-      />
+      {stateBoard === StateBoard.PLAY && (
+        <Control
+          position={pacmanPosition}
+          setPosition={pacmanSetPosition}
+          setDirection={pacmanSetDirection}
+        />
+      )}
       {ghosts.map((item, index) => {
         return (
-            <Ghost
-                key={`ghost-elem-${index}`}
-                color={item?.color}
-                startPosition={item?.startPosition}
-            />
-        )
+          <Ghost
+            ref={ghostsRef[index]}
+            key={`ghost-elem-${index}`}
+            color={item?.color}
+            position={item?.position}
+            stateBoard={stateBoard}
+          />
+        );
       })}
     </div>
   );
@@ -164,13 +169,13 @@ const Board = ({ setScore, isWindowResized, pacmanRef }) => {
 
 Board.defaultProps = {
   setScore: () => {},
-  isWindowResized: false,
   pacmanRef: {},
 };
 Board.propTypes = {
   setScore: PropTypes.func,
-  isWindowResized: PropTypes.bool,
   pacmanRef: PropTypes.object,
+  stateBoard: PropTypes.string.isRequired,
+  setStateBoard: PropTypes.func.isRequired,
 };
 
 export default Board;

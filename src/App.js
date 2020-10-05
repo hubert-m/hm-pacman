@@ -5,28 +5,35 @@ import Score from "./components/Score";
 import Board from "./components/Board";
 import RefreshButton from "./components/RefreshButton";
 import ResizedPage from "./components/ResizedPage";
+import StateBoard from "./constants/StateBoard";
+import LosePage from "./components/LosePage";
 
 let resizePrevent = false;
 function App() {
-  // TODO: use params of window size in other components by props
-  const size = useWindowSize();
-    const pacmanRef = useRef(null);
+  const windowSize = useWindowSize();
+  const pacmanRef = useRef(null);
   const [score, setScore] = useState(0);
-  const [isWindowResized, setWindowResized] = useState(false);
+  const [stateBoard, setStateBoard] = useState(StateBoard.PLAY);
 
   useEffect(() => {
-    if (size.width) {
-      if (resizePrevent) setWindowResized(true);
+    if (windowSize.width) {
+      if (resizePrevent) setStateBoard(StateBoard.RESIZED);
       resizePrevent = true;
     }
-  }, [size]);
+  }, [windowSize]);
 
   return (
     <div className="app">
-      {isWindowResized && <ResizedPage />}
+      {stateBoard === StateBoard.RESIZED && <ResizedPage />}
+      {stateBoard === StateBoard.LOSE && <LosePage />}
       <RefreshButton />
       <Score score={score} />
-      <Board setScore={setScore} isWindowResized={isWindowResized} pacmanRef={pacmanRef} />
+      <Board
+        setScore={setScore}
+        pacmanRef={pacmanRef}
+        stateBoard={stateBoard}
+        setStateBoard={setStateBoard}
+      />
     </div>
   );
 }
