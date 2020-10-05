@@ -17,18 +17,22 @@ export const PauseButton = ({ stateBoard, setStateBoard }) => {
     } else if (stateBoard === StateBoard.PAUSE) {
       setVariant(StateBoard.PLAY);
     }
-  }, [stateBoard])
+  }, [stateBoard]);
   return (
-    <button
-      onClick={handlePauseButton}
-      className={"button_top " + variant}
-    />
+    <button onClick={handlePauseButton} className={"button_top " + variant} />
   );
 };
 
 export const RefreshButton = () => {
+  const handleRefresh = () => {
+    window.location.reload(false);
+  };
   return (
-    <button className="refresh-button" style={{ right: Settings.BORDER }}>
+    <button
+      className="refresh-button"
+      onClick={handleRefresh}
+      style={{ right: Settings.BORDER }}
+    >
       Refresh
     </button>
   );

@@ -29,7 +29,9 @@
 
 @media screen and (max-width: 900px) {
     .control {
-        width: 250px;
+        width: 100%;
+        padding-left: 40px;
+        padding-right: 40px;
     }
     .control-button {
         height: 100px;

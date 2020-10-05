@@ -1,7 +1,7 @@
 .pause-page {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background: rgba(0,0,0,.80);
     display: flex;
     align-items: center;
@@ -19,6 +19,7 @@
     align-items: center;
     justify-content: center;
     background: transparent;
+    z-index: 999;
 }
 
 .play-svg {
@@ -27,4 +28,40 @@
 
 .play-button:focus {
     outline: none;
+}
+
+.author {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    color: var(--white-color);
+}
+
+.instruction {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    color: var(--white-color);
+    width: 200px;
+    z-index: 900;
+}
+.headline {
+    text-align: center;
+}
+.keys-or {
+    text-align: center;
+}
+.keys {
+    width: 100%;
+}
+.keys i {
+    background-color: var(--white-color);
+    color: var(--black-color);
+    width: 20%;
+    padding: 5px;
+    margin: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
 }
