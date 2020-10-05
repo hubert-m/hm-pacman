@@ -14,3 +14,12 @@
     margin: 0;
     padding: 0;
 }
+
+@media screen and (max-width: 900px) {
+    .score {
+        justify-content: flex-start;
+    }
+    .result {
+        margin-left: 20px;
+    }
+}

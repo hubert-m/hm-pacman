@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Settings from "../constants/Settings";
 import StateBoard from "../constants/StateBoard";
 
@@ -7,12 +7,17 @@ export const PauseButton = ({ stateBoard, setStateBoard }) => {
   const handlePauseButton = () => {
     if (stateBoard === StateBoard.PLAY) {
       setStateBoard(StateBoard.PAUSE);
-      setVariant(StateBoard.PLAY);
     } else if (stateBoard === StateBoard.PAUSE) {
       setStateBoard(StateBoard.PLAY);
-      setVariant(StateBoard.PAUSE);
     }
   };
+  useEffect(() => {
+    if (stateBoard === StateBoard.PLAY) {
+      setVariant(StateBoard.PAUSE);
+    } else if (stateBoard === StateBoard.PAUSE) {
+      setVariant(StateBoard.PLAY);
+    }
+  }, [stateBoard])
   return (
     <button
       onClick={handlePauseButton}
