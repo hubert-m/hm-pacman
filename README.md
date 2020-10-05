@@ -1,3 +1,9 @@
+## Live demo
+
+```
+http://machala.net.pl/demo/pacman/
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
