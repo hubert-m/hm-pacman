@@ -20,16 +20,16 @@ class Ghost extends Component {
 
   componentDidMount() {
     if (this.props.stateBoard === StateBoard.PLAY) {
-      this.changeDirectionInterval = setInterval(this.changeDirection, 2000);
-      this.moveInterval = setInterval(this.move, 2000);
+      this.changeDirectionInterval = setInterval(this.changeDirection, Settings.SPEED_OF_GHOST);
+      this.moveInterval = setInterval(this.move, Settings.SPEED_OF_GHOST);
     }
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.stateBoard !== prevProps.stateBoard) {
       if (this.props.stateBoard === StateBoard.PLAY) {
-        this.changeDirectionInterval = setInterval(this.changeDirection, 2000);
-        this.moveInterval = setInterval(this.move, 2000);
+        this.changeDirectionInterval = setInterval(this.changeDirection, Settings.SPEED_OF_GHOST);
+        this.moveInterval = setInterval(this.move, Settings.SPEED_OF_GHOST);
       } else {
         clearInterval(this.changeDirectionInterval);
         clearInterval(this.moveInterval);

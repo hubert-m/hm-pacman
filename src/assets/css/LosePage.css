@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    z-index: 999;
+    z-index: 3;
 }
 
 .lose-page__text-err {

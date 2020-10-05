@@ -4,7 +4,7 @@
     right: 100px;
     width: 40px;
     height: 40px;
-    transition: 100ms all ease;
+    z-index: 2;
 }
 
 .button_top.pause {
@@ -26,5 +26,5 @@
     position: absolute;
     top: 20px;
     right: 10px;
-    z-index: 999;
+    z-index: 4;
 }
