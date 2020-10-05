@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Pacman from "./Pacman";
 import Ghost from "./Ghost";
-import Food from "./Food";
+import Coin from "./Coin";
 import Settings from "../constants/Settings";
 import maxStepsWidth from "../helpers/maxStepsWidth";
 import maxStepsHeight from "../helpers/maxStepsHeight";
@@ -22,24 +22,24 @@ const Board = ({ setScore, pacmanRef, stateBoard, setStateBoard }) => {
   const [ghosts, setGhosts] = useState([]);
   const [generateGhosts, setGenerateGhosts] = useState(true);
 
-  const foodsRef = [];
-  const amountOfFood =
+  const coinsRef = [];
+  const amountOfCoin =
     ((windowSize.width - Settings.STEP) *
       (windowSize.height - Settings.TOP_SCORE_BOARD_HEIGHT)) /
       (Settings.STEP * Settings.STEP) -
     1;
 
-  for (let i = 0; i < amountOfFood; i++) {
-    foodsRef[i] = React.createRef();
+  for (let i = 0; i < amountOfCoin; i++) {
+    coinsRef[i] = React.createRef();
   }
 
   useEffect(() => {
     if (stateBoard === StateBoard.PLAY) {
       if (pacmanRef) pacmanRef.current.focus();
-      const intervalFood = setInterval(lookForEat, 100);
+      const intervalCoin = setInterval(lookForEat, 100);
       const intervalGhost = setInterval(ghostCollision, 100);
       return () => {
-        clearInterval(intervalFood);
+        clearInterval(intervalCoin);
         clearInterval(intervalGhost);
       };
     } else {
@@ -54,24 +54,24 @@ const Board = ({ setScore, pacmanRef, stateBoard, setStateBoard }) => {
     const pacmanLastX = pacmanX + Settings.SIZE / 2;
     const pacmanLastY = pacmanY + Settings.SIZE / 2;
 
-    for (let i = 0; i <= amountOfFood; i++) {
-      const currentFood = foodsRef[i].current;
-      if (currentFood) {
-        const currentFoodX = currentFood.state.position.left;
-        const currentFoodY = currentFood.state.position.top;
-        const currentFoodLastX = currentFoodX + Settings.STEP / 2;
-        const currentFoodLastY = currentFoodY + Settings.STEP / 2;
+    for (let i = 0; i <= amountOfCoin; i++) {
+      const currentCoin = coinsRef[i].current;
+      if (currentCoin) {
+        const currentCoinX = currentCoin.state.position.left;
+        const currentCoinY = currentCoin.state.position.top;
+        const currentCoinLastX = currentCoinX + Settings.STEP / 2;
+        const currentCoinLastY = currentCoinY + Settings.STEP / 2;
 
         if (
-          (pacmanX >= currentFoodX && pacmanX <= currentFoodLastX) ||
-          (pacmanLastX >= currentFoodX && pacmanLastX <= currentFoodLastX)
+          (pacmanX >= currentCoinX && pacmanX <= currentCoinLastX) ||
+          (pacmanLastX >= currentCoinX && pacmanLastX <= currentCoinLastX)
         ) {
           if (
-            (pacmanY >= currentFoodY && pacmanY <= currentFoodLastY) ||
-            (pacmanLastY >= currentFoodY && pacmanLastY <= currentFoodLastY)
+            (pacmanY >= currentCoinY && pacmanY <= currentCoinLastY) ||
+            (pacmanLastY >= currentCoinY && pacmanLastY <= currentCoinLastY)
           ) {
-            if (!currentFood.state.hidden) {
-              currentFood.ate();
+            if (!currentCoin.state.hidden) {
+              currentCoin.ate();
               setScore((value) => value + 1);
             }
           }
@@ -80,7 +80,7 @@ const Board = ({ setScore, pacmanRef, stateBoard, setStateBoard }) => {
     }
   };
 
-  const foods = [];
+  const coins = [];
   let countOfCoins = 0;
   for (let i = 0; i < maxStepsHeight(window.innerHeight); i++) {
     for (let j = 0; j < maxStepsWidth(window.innerWidth); j++) {
@@ -93,17 +93,17 @@ const Board = ({ setScore, pacmanRef, stateBoard, setStateBoard }) => {
       };
 
       countOfCoins++;
-      foods.push(
-        <Food
-          key={`food-elem-${countOfCoins}`}
+      coins.push(
+        <Coin
+          key={`coin-elem-${countOfCoins}`}
           position={position}
-          ref={foodsRef[countOfCoins]}
+          ref={coinsRef[countOfCoins]}
         />
       );
     }
   }
 
-  const numberOfGhosts = Math.ceil(foods.length / Settings.GHOST_PER_X_POINTS);
+  const numberOfGhosts = Math.ceil(coins.length / Settings.GHOST_PER_X_POINTS);
   const ghostsRef = [];
 
   for (let i = 0; i < numberOfGhosts; i++) {
@@ -137,7 +137,7 @@ const Board = ({ setScore, pacmanRef, stateBoard, setStateBoard }) => {
 
   return (
     <div className="board">
-      {foods}
+      {coins}
       <Pacman
         position={pacmanPosition}
         setPosition={pacmanSetPosition}

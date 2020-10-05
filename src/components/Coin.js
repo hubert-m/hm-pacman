@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import "../assets/css/Food.css";
+import "../assets/css/Coin.css";
 import Settings from "../constants/Settings";
 
-class Food extends Component {
+class Coin extends Component {
   state = {
     position: {
       top: this.props.position.top,
@@ -25,10 +25,10 @@ class Food extends Component {
           width: Settings.STEP,
           height: Settings.STEP,
         }}
-        className={hidden ? "food hidden" : "food"}
+        className={hidden ? "coin hidden" : "coin"}
       >
         <div
-          className="food-dot"
+          className="coin-dot"
           style={{
             width: Settings.COIN_SIZE,
             height: Settings.COIN_SIZE,
@@ -39,8 +39,8 @@ class Food extends Component {
   }
 }
 
-Food.defaultProps = {
+Coin.defaultProps = {
   position: { top: 0, left: 0 },
 };
 
-export default Food;
+export default Coin;

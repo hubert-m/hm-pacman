@@ -5,7 +5,7 @@
 @import "assets/css/Score.css";
 @import "assets/css/Pacman.css";
 @import "assets/css/Ghost.css";
-@import "assets/css/Food.css";
+@import "assets/css/Coin.css";
 
 :root {
     --white-color: #FFF;

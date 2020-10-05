@@ -1,4 +1,4 @@
-.food {
+.coin {
     position: absolute;
     display: flex;
     align-items: center;
@@ -9,7 +9,7 @@
     display: none;
 }
 
-.food-dot {
+.coin-dot {
     background-color: yellow;
     margin: 20px;
     border-radius: 40px;

@@ -12,7 +12,6 @@ const setGhostsLoop = (numberOfGhosts, windowSize) => {
         let randomWidth = Math.floor(
             Math.random() * maxStepsWidth(windowSize.width)
         );
-        console.log("height: ", randomHeight, " width: ", randomWidth);
         if(randomHeight === 0 && randomWidth < 2) {
             randomHeight = Math.max(randomHeight, 2);
         }
