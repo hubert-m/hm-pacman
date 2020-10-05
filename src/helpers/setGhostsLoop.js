@@ -6,12 +6,19 @@ import GhostColors from "../constants/GhostColors";
 const setGhostsLoop = (numberOfGhosts, windowSize) => {
     const result = [];
     for (let i = 0; i < numberOfGhosts; i++) {
-        const randomHeight = Math.floor(
+        let randomHeight = Math.floor(
             Math.random() * maxStepsHeight(windowSize.height)
         );
-        const randomWidth = Math.floor(
+        let randomWidth = Math.floor(
             Math.random() * maxStepsWidth(windowSize.width)
         );
+        console.log("height: ", randomHeight, " width: ", randomWidth);
+        if(randomHeight === 0 && randomWidth < 2) {
+            randomHeight = Math.max(randomHeight, 2);
+        }
+        if(randomWidth === 0 && randomHeight < 2) {
+            randomWidth = Math.max(randomWidth, 2);
+        }
         const position = {
             top: Settings.STEP * randomHeight,
             left: Settings.STEP * randomWidth,
