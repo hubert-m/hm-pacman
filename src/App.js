@@ -3,13 +3,14 @@ import useWindowSize from "./helpers/useWindowSize";
 import "./App.css";
 import Score from "./components/Score";
 import Board from "./components/Board";
-import RefreshButton from "./components/RefreshButton";
 import ResizedPage from "./components/ResizedPage";
 import StateBoard from "./constants/StateBoard";
 import LosePage from "./components/LosePage";
 import WonPage from "./components/WonPage";
+import PausePage from "./components/PausePage";
 import maxStepsHeight from "./helpers/maxStepsHeight";
 import maxStepsWidth from "./helpers/maxStepsWidth";
+import { PauseButton, RefreshButton } from "./components/Buttons";
 
 let resizePrevent = false;
 function App() {
@@ -21,11 +22,11 @@ function App() {
   const [stateBoard, setStateBoard] = useState(StateBoard.PLAY);
 
   useEffect(() => {
-    if (windowSize.width && stateBoard === StateBoard.PLAY) {
+    if (windowSize.width) {
       if (resizePrevent) setStateBoard(StateBoard.RESIZED);
       resizePrevent = true;
     }
-  }, [windowSize, stateBoard]);
+  }, [windowSize]);
 
   useEffect(() => {
     if (score === allCoins && stateBoard === StateBoard.PLAY)
@@ -37,7 +38,11 @@ function App() {
       {stateBoard === StateBoard.RESIZED && <ResizedPage />}
       {stateBoard === StateBoard.LOSE && <LosePage />}
       {stateBoard === StateBoard.WON && <WonPage score={score} />}
+      {stateBoard === StateBoard.PAUSE && (
+        <PausePage setStateBoard={setStateBoard} />
+      )}
       <RefreshButton />
+      <PauseButton stateBoard={stateBoard} setStateBoard={setStateBoard} />
       <Score score={score} />
       <Board
         setScore={setScore}
